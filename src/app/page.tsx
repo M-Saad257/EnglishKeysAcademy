@@ -31,7 +31,7 @@ export default function Home() {
       features: ["Basic to Advanced", "Concept building", "Practice exercises"]
     },
     {
-      title: "Advanced Communication Skills",
+      title: "Pro Communication Skills",
       price: "PKR 3,999",
       duration: "8 weeks",
       features: ["Interview prep", "Public speaking", "Confidence building"]
