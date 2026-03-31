@@ -100,15 +100,24 @@ body {
   color: #fff;
 }
 
-/* Navigation */
 .sticky-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #eee;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 1000;
+  padding: 15px 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sticky-nav.scrolled {
+  background: rgba(255, 255, 255, 0.98);
   padding: 10px 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
 }
 
 .nav-container {
@@ -145,10 +154,139 @@ body {
   text-decoration: none;
   color: var(--text-main);
   font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease;
 }
 
 .nav-links a:hover {
   color: var(--primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Hamburger Button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1100;
+}
+
+.hamburger span {
+  width: 30px;
+  height: 2px;
+  background: var(--eka-dark);
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+  background: var(--primary);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+  background: var(--primary);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 1050;
+  visibility: hidden;
+}
+
+.mobile-menu.active {
+  right: 0;
+  visibility: visible;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  padding: 40px;
+}
+
+.mobile-menu-links a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--eka-dark);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.mobile-menu.active .mobile-menu-links a {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.mobile-menu.active .mobile-menu-links a:nth-child(1) { transition-delay: 0.1s; }
+.mobile-menu.active .mobile-menu-links a:nth-child(2) { transition-delay: 0.2s; }
+.mobile-menu.active .mobile-menu-links a:nth-child(3) { transition-delay: 0.3s; }
+.mobile-menu.active .mobile-menu-links a:nth-child(4) { transition-delay: 0.4s; }
+.mobile-menu.active .mobile-menu-links a:nth-child(5) { transition-delay: 0.5s; }
+
+.mobile-menu-links a:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.mobile-cta {
+  width: 200px;
+  margin-top: 20px;
+}
+
+.menu-open {
+  overflow: hidden;
 }
 
 /* Hero Section */
@@ -525,13 +663,23 @@ body {
 }
 
 /* Mobile Responsive */
+@media (max-width: 992px) {
+  .nav-links.desktop-only, .nav-cta.desktop-only {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
+
 @media (max-width: 768px) {
-  .hero-title { font-size: 3rem; }
-  .nav-links { display: none; }
+  .hero-title { font-size: 2.8rem; }
   .instructor-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr; gap: 30px; }
   .features-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
   .btn.lg { width: 100%; margin-bottom: 10px; }
   .hero-actions { flex-direction: column; }
+  .logo-text .eka { font-size: 1.1rem; }
+  .logo-text .academy { font-size: 0.8rem; }
 }

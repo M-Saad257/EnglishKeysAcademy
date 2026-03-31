@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
@@ -38,10 +41,29 @@ export default function Home() {
     }
   ];
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
-    <main className="main">
+    <main className={`main ${isMenuOpen ? 'menu-open' : ''}`}>
       {/* Sticky Navigation */}
-      <nav className="sticky-nav">
+      <nav className={`sticky-nav ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container nav-container">
           <div className="logo-section">
             <img src="/logo.png" alt="EnglishKeys Academy Logo" height="50" />
@@ -50,15 +72,46 @@ export default function Home() {
               <span className="academy">Academy</span>
             </div>
           </div>
-          <div className="nav-links">
+          
+          <div className="nav-links desktop-only">
             <a href="#home">Home</a>
             <a href="#courses">Courses</a>
             <a href="#instructor">Instructor</a>
             <a href="#contact">Contact</a>
           </div>
-          <a href={`https://wa.me/${whatsappNumber}`} className="btn btn-primary nav-cta">
-            Enroll Now
-          </a>
+
+          <div className="nav-actions">
+            <a href={`https://wa.me/${whatsappNumber}`} className="btn btn-primary nav-cta desktop-only">
+              Enroll Now
+            </a>
+            
+            <button 
+              className={`hamburger ${isMenuOpen ? 'active' : ''}`} 
+              onClick={toggleMenu}
+              aria-label="Toggle Menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
+          <div className="mobile-menu-links">
+            <a href="#home" onClick={closeMenu}>Home</a>
+            <a href="#courses" onClick={closeMenu}>Courses</a>
+            <a href="#instructor" onClick={closeMenu}>Instructor</a>
+            <a href="#contact" onClick={closeMenu}>Contact</a>
+            <a 
+              href={`https://wa.me/${whatsappNumber}`} 
+              className="btn btn-primary mobile-cta"
+              onClick={closeMenu}
+            >
+              Enroll Now
+            </a>
+          </div>
         </div>
       </nav>
 
